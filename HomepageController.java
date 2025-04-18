@@ -1,5 +1,10 @@
 /**
  * Sample Skeleton for 'Homepage.fxml' Controller Class
+ Date: 4/15/2025
+ Author: Danny Carpio-Tovar
+ This is the Home Page of the E-commerce program.
+ This should incorporate all of the data fields from the
+ separate topics and Databases to power the whole program.
  */
 
 import java.net.URL;
