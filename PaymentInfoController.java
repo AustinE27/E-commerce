@@ -2,97 +2,98 @@ package com.example.commerceproj;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 
+/**
+ * Controller that manages the user input and validation of payment details.
+ *
+ * Author: Samuel Garcia
+ * Date: 4/17/25
+ */
 public class PaymentInfoController {
-    @FXML
-    private TextField cardNumberField;
-    @FXML
-    private TextField cardNameField;
-    @FXML
-    private TextField expiryMonthField;
-    @FXML
-    private TextField expiryYearField;
-    @FXML
-    private TextField cvvField;
-    @FXML
-    private Button confirmButton;
-    
+    @FXML private TextField cardNumberField;
+    @FXML private TextField cardNameField;
+    @FXML private TextField expiryMonthField;
+    @FXML private TextField expiryYearField;
+    @FXML private TextField cvvField;
+    @FXML private Button confirmButton;
+
     private CheckoutController checkoutController;
     private ShippingInfoController shippingController;
-    
+
+    /**
+     * Initializes the input listeners and field validation.
+     */
     @FXML
     public void initialize() {
-        // Add input validation
-        cardNumberField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cardNumberField.setText(newValue.replaceAll("[^\\d]", ""));
+        cardNumberField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                cardNumberField.setText(newVal.replaceAll("[^\\d]", ""));
             }
-            if (newValue.length() > 16) {
-                cardNumberField.setText(newValue.substring(0, 16));
-            }
-        });
-        
-        expiryMonthField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                expiryMonthField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            if (newValue.length() > 2) {
-                expiryMonthField.setText(newValue.substring(0, 2));
+            if (newVal.length() > 16) {
+                cardNumberField.setText(newVal.substring(0, 16));
             }
         });
-        
-        expiryYearField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                expiryYearField.setText(newValue.replaceAll("[^\\d]", ""));
+
+        expiryMonthField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                expiryMonthField.setText(newVal.replaceAll("[^\\d]", ""));
             }
-            if (newValue.length() > 2) {
-                expiryYearField.setText(newValue.substring(0, 2));
-            }
-        });
-        
-        cvvField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                cvvField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-            if (newValue.length() > 3) {
-                cvvField.setText(newValue.substring(0, 3));
+            if (newVal.length() > 2) {
+                expiryMonthField.setText(newVal.substring(0, 2));
             }
         });
-        
-        // Add validation for confirm button
+
+        expiryYearField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                expiryYearField.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+            if (newVal.length() > 2) {
+                expiryYearField.setText(newVal.substring(0, 2));
+            }
+        });
+
+        cvvField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                cvvField.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+            if (newVal.length() > 3) {
+                cvvField.setText(newVal.substring(0, 3));
+            }
+        });
+
         confirmButton.setDisable(true);
         addValidationListeners();
     }
-    
+
+    /**
+     * Enables the confirm button only if all fields are filled.
+     */
     private void addValidationListeners() {
-        // Create a list of all required fields
-        TextField[] requiredFields = {cardNumberField, cardNameField, expiryMonthField, expiryYearField, cvvField};
-        
-        // Add listeners to all fields
-        for (TextField field : requiredFields) {
-            field.textProperty().addListener((observable, oldValue, newValue) -> {
-                boolean allFieldsFilled = true;
-                for (TextField f : requiredFields) {
+        TextField[] fields = {cardNumberField, cardNameField, expiryMonthField, expiryYearField, cvvField};
+        for (TextField field : fields) {
+            field.textProperty().addListener((obs, oldVal, newVal) -> {
+                boolean filled = true;
+                for (TextField f : fields) {
                     if (f.getText().trim().isEmpty()) {
-                        allFieldsFilled = false;
+                        filled = false;
                         break;
                     }
                 }
-                confirmButton.setDisable(!allFieldsFilled);
+                confirmButton.setDisable(!filled);
             });
         }
     }
-    
+
+    /**
+     * Handles the confirm action and validates all user input.
+     */
     @FXML
     private void handleConfirm() {
-        // Validate card number length
         if (cardNumberField.getText().length() != 16) {
             showError("Card number must be 16 digits");
             return;
         }
-        
-        // Validate expiry date
+
         try {
             int month = Integer.parseInt(expiryMonthField.getText());
             int year = Integer.parseInt(expiryYearField.getText());
@@ -104,19 +105,22 @@ public class PaymentInfoController {
             showError("Invalid expiry date");
             return;
         }
-        
-        // Validate CVV
+
         if (cvvField.getText().length() != 3) {
             showError("CVV must be 3 digits");
             return;
         }
-        
-        // Proceed to order confirmation
+
         if (checkoutController != null) {
             checkoutController.loadOrderConfirmation();
         }
     }
-    
+
+    /**
+     * Displays an alert dialog with an error message.
+     *
+     * @param message error message to show
+     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -124,18 +128,18 @@ public class PaymentInfoController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     public void setCheckoutController(CheckoutController controller) {
         this.checkoutController = controller;
     }
-    
+
     public void setShippingController(ShippingInfoController controller) {
         this.shippingController = controller;
     }
-    
+
     public String getCardNumber() { return cardNumberField.getText(); }
     public String getCardName() { return cardNameField.getText(); }
     public String getExpiryMonth() { return expiryMonthField.getText(); }
     public String getExpiryYear() { return expiryYearField.getText(); }
     public String getCvv() { return cvvField.getText(); }
-} 
+}

@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for handling checkout operations including cart summary,
+ * navigation between checkout stages, and dynamic updates to totals.
+ *
+ * Author: Samuel Garcia
+ * Date: 4/17/25
+ */
 public class CheckoutController {
     @FXML
     private VBox cartSummary;
@@ -26,14 +33,20 @@ public class CheckoutController {
     private ShippingInfoController shippingController;
     private PaymentInfoController paymentController;
     private OrderConfirmationController confirmationController;
-    
+
+    /**
+     * Initializes the controller with sample items and updates the cart summary.
+     */
     @FXML
     public void initialize() {
         // Add some sample cart items
         addSampleCartItems();
         updateCartSummary();
     }
-    
+
+    /**
+     * Adds example items to the cart and calculates the subtotal.
+     */
     private void addSampleCartItems() {
         cartItems.add(new CartItem("Sample Product 1", 29.99, "SKU001"));
         cartItems.add(new CartItem("Sample Product 2", 49.99, "SKU002"));
@@ -42,7 +55,10 @@ public class CheckoutController {
         // Calculate subtotal
         subtotal = cartItems.stream().mapToDouble(CartItem::getPrice).sum();
     }
-    
+
+    /**
+     * Updates the UI component that displays the current cart, subtotal, shipping, and total.
+     */
     private void updateCartSummary() {
         cartSummary.getChildren().clear();
         
@@ -66,12 +82,18 @@ public class CheckoutController {
         totalLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
         cartSummary.getChildren().add(totalLabel);
     }
-    
+
+    /**
+     * Sets the shipping cost and updates the summary display.
+     */
     public void setShippingCost(double cost) {
         this.shippingCost = cost;
         updateCartSummary();
     }
-    
+
+    /**
+     * Loads the shipping information screen.
+     */
     public void loadShippingInfo() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/commerceproj/shipping-info.fxml"));
@@ -83,7 +105,10 @@ public class CheckoutController {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Loads the payment information screen and passes the shipping info.
+     */
     public void loadPaymentInfo() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/commerceproj/payment-info.fxml"));
@@ -96,7 +121,10 @@ public class CheckoutController {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Loads the order confirmation screen and passes the necessary data.
+     */
     public void loadOrderConfirmation() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/commerceproj/order-confirmation.fxml"));
@@ -110,13 +138,22 @@ public class CheckoutController {
             e.printStackTrace();
         }
     }
-    
-    // Inner class to represent cart items
+
+    /**
+     * Represents an item in the cart with name, price, and SKU.
+     */
     public static class CartItem {
         private String name;
         private double price;
         private String sku;
-        
+
+        /**
+         * Constructs a CartItem with given name, price, and SKU.
+         *
+         * @param name the name of the product
+         * @param price the price of the product
+         * @param sku the stock keeping unit identifier
+         */
         public CartItem(String name, double price, String sku) {
             this.name = name;
             this.price = price;

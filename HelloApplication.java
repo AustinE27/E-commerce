@@ -8,26 +8,37 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Launches the checkout JavaFX application and loads the main checkout screen.
+ *
+ * Author: Samuel Garcia
+ * Date: 4/17/25
+ */
 public class HelloApplication extends Application {
+
+    /**
+     * Entry point for JavaFX applications. Sets up the main scene and initiates checkout flow.
+     *
+     * @param stage the primary stage for this application
+     * @throws IOException if the FXML file is not found or cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        // Load the main checkout layout
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/commerceproj/checkout.fxml"));
         Parent root = loader.load();
-        
-        // Get the controller and initialize the checkout flow
+
         CheckoutController checkoutController = loader.getController();
-        
-        // Load the shipping info page
         checkoutController.loadShippingInfo();
-        
-        // Set up the stage
+
         Scene scene = new Scene(root, 1000, 700);
         stage.setTitle("Checkout");
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Launches the JavaFX application.
+     */
     public static void main(String[] args) {
         launch();
     }

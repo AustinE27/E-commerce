@@ -5,6 +5,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import java.util.Random;
 
+/**
+ * Controller to handle the order confirmation screen displaying
+ * summary and customer information.
+ *
+ * Author: Samuel Garcia
+ * Date: 4/17/25
+ */
 public class OrderConfirmationController {
     @FXML
     private Label orderNumberLabel;
@@ -18,47 +25,54 @@ public class OrderConfirmationController {
     private Label cardLastFourLabel;
     @FXML
     private VBox orderSummary;
-    
+
     private CheckoutController checkoutController;
     private ShippingInfoController shippingController;
     private PaymentInfoController paymentController;
-    
+
+    /**
+     * Initializes the order confirmation screen with generated order number
+     * and customer-provided shipping/payment details.
+     */
     @FXML
     public void initialize() {
-        // Generate a random order number
         String orderNumber = generateOrderNumber();
         orderNumberLabel.setText("Order #" + orderNumber);
-        
-        // Update labels with customer information
+
         if (shippingController != null) {
             emailLabel.setText("Email: " + shippingController.getEmail());
             nameLabel.setText("Name: " + shippingController.getName());
-            addressLabel.setText("Address: " + shippingController.getAddress() + ", " + 
-                               shippingController.getCity() + ", " + 
-                               shippingController.getState() + " " + 
-                               shippingController.getZip());
+            addressLabel.setText("Address: " + shippingController.getAddress() + ", " +
+                    shippingController.getCity() + ", " +
+                    shippingController.getState() + " " +
+                    shippingController.getZip());
         }
-        
+
         if (paymentController != null) {
             String cardNumber = paymentController.getCardNumber();
             cardLastFourLabel.setText("Card: **** **** **** " + cardNumber.substring(cardNumber.length() - 4));
         }
     }
-    
+
+    /**
+     * Generates a random order number string.
+     *
+     * @return formatted order number
+     */
     private String generateOrderNumber() {
         Random random = new Random();
         return String.format("ORD-%06d", random.nextInt(1000000));
     }
-    
+
     public void setCheckoutController(CheckoutController controller) {
         this.checkoutController = controller;
     }
-    
+
     public void setShippingController(ShippingInfoController controller) {
         this.shippingController = controller;
     }
-    
+
     public void setPaymentController(PaymentInfoController controller) {
         this.paymentController = controller;
     }
-} 
+}
