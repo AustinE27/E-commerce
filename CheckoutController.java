@@ -133,6 +133,7 @@ public class CheckoutController {
             confirmationController.setCheckoutController(this);
             confirmationController.setShippingController(shippingController);
             confirmationController.setPaymentController(paymentController);
+            confirmationController.populateConfirmationDetails();
             mainContent.getChildren().setAll(confirmation);
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,9 +160,14 @@ public class CheckoutController {
             this.price = price;
             this.sku = sku;
         }
+
         
         public String getName() { return name; }
         public double getPrice() { return price; }
         public String getSku() { return sku; }
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 } 

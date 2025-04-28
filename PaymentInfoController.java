@@ -114,6 +114,42 @@ public class PaymentInfoController {
         if (checkoutController != null) {
             checkoutController.loadOrderConfirmation();
         }
+        if (shippingController != null) {
+            String userEmail = shippingController.getEmail();
+            String userName = shippingController.getName();
+            String address = shippingController.getAddress() + ", " +
+                    shippingController.getCity() + ", " +
+                    shippingController.getState() + " " +
+                    shippingController.getZip();
+
+            String shippingMethod = shippingController.getShippingMethod();
+
+            StringBuilder itemsList = new StringBuilder();
+            for (CheckoutController.CartItem item : checkoutController.getCartItems()) {
+                itemsList.append("- ").append(item.getName())
+                        .append(" ($").append(String.format("%.2f", item.getPrice()))
+                        .append(")\n");
+            }
+
+            String fromEmail = "forealisam@gmail.com";     // 🔥 your Gmail
+            String appPassword = "uaqm fndv xnyd qklf";       // 🔥 your app password
+            String subject = "Order Confirmation";
+
+            String body = "Hi " + userName + ",\n\n" +
+                    "Thank you for your purchase!\n\n" +
+                    "📦 Items you ordered:\n" + itemsList.toString() + "\n" +
+                    "Shipping to: " + address + "\n" +
+                    "Shipping Method: " + shippingMethod + "\n\n" +
+                    "We hope you enjoy your order!\n\n" +
+                    "Best regards,\nCommerce Team";
+
+            try {
+                EmailSender.sendEmail(fromEmail, appPassword, userEmail, subject, body);
+                System.out.println("Order confirmation email sent to " + userEmail);
+            } catch (Exception e) {
+                System.err.println("Failed to send confirmation email: " + e.getMessage());
+            }
+        }
     }
 
     /**
