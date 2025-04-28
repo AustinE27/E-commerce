@@ -1,7 +1,7 @@
 /**
     TEMP Product datatype TESTER for CartItem.
     @author J. Hernandez-Velazquez
-    @version 1.0
+    @version 2.0
  */
 package model;
 
@@ -34,13 +34,4 @@ public class Product {
         return name + " - $" + price;
     }
 
-    public static class TestProductProvider {
-        public static List<Product> getSampleProducts() {
-            List<Product> products = new ArrayList<>();
-            products.add(new Product(101, "Wireless Mouse", 19.99));
-            products.add(new Product(102, "Mechanical Keyboard", 79.99));
-            products.add(new Product(103, "HD Monitor", 149.99));
-            return products;
-        }
-    }
 }

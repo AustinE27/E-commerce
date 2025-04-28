@@ -1,45 +1,31 @@
 /**
-    NOT IMPLEMENTED/TESTED
     Controller for GUI Display.
+    Updated for dynamic ListView cart display with HBox per cart item.
     @author J. Hernandez-Velazquez
-    @version 1.0
+    @version 2.0
  */
 
 package controller;
 
 import javafx.collections.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.scene.image.ImageView;
 import model.*;
 
 /**
-    Connects the UI cart table to
-    display products and total cost.
+    Connects the UI cart ListView to
+    dynamically display products and total cost.
  */
 public class CartController {
-    /**
-        Displays the list of cart items in a table
-        in the cart's GUI.
-     */
-    @FXML private TableView<CartItem> cartTable;
 
     /**
-        Shows the product name for each item
-        listed in the cart table.
+        Displays the list of cart items dynamically
+        in the cart's GUI ListView.
      */
-    @FXML private TableColumn<CartItem, String> nameCol;
-
-    /**
-        Shows the quantity selected for each
-        cart item in the table.
-     */
-    @FXML private TableColumn<CartItem, Integer> qtyCol;
-
-    /**
-        Displays the total price per product line.
-     */
-    @FXML private TableColumn<CartItem, Double> priceCol;
+    @FXML private ListView<HBox> cartListView;
 
     /**
         Displays the combined subtotal cost of
@@ -60,38 +46,77 @@ public class CartController {
     private final CartManager cartManager = new CartManager();
 
     /**
-        Initializes the cart table with columns of
-        product name, quantity, and total price.
+        Initializes the cart view by
+        showing all cart items dynamically.
      */
     @FXML
     public void initialize() {
-        nameCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getProduct().getName()));
-        qtyCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(
-                cellData.getValue().getQuantity()).asObject());
-        priceCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleDoubleProperty(
-                cellData.getValue().getTotalPrice()).asObject());
 
-        cartTable.setItems(cartData);
+
+        //                          REMOVE LATER THIS IS A TESTPRODUCT
+
+
+        Product testProduct = new Product(123456, "Laptop", 1149.99);
+        Product testProduct2 = new Product(12346, "Wireless Keyboard", 27.99);
+
+        cartManager.addProduct(testProduct, 1);
+        cartManager.addProduct(testProduct2, 2);
+
+        refreshCartView();
     }
 
     /**
-        Adds a test product to the cart
-        and refreshes the cart and total.
+        Refreshes the cart ListView with
+        current cart items that have quantity > 0.
      */
-    @FXML
-    private void onAddProduct() {
-        Product product = new Product(1001, "Test Product", 19.99);
-        cartManager.addToCart(product, 1);
-        refreshCart();
-    }
+    private void refreshCartView() {
+        cartListView.getItems().clear();
 
-    /**
-        Updates the cart view and
-        total from the cart manager.
-     */
-    private void refreshCart() {
-        cartData.setAll(cartManager.getAllItems());
-        totalLabel.setText("Total: $" + String.format("%.2f", cartManager.getTotal()));
+        double subtotal = 0.0;
+
+        for (CartItem item : cartManager.getCartItems()) {
+            if (item.getQuantity() > 0) {
+                HBox itemBox = new HBox(15); // 15px spacing
+
+                // (Optional future) Product Image placeholder
+                ImageView productImage = new ImageView();
+                productImage.setFitWidth(50);
+                productImage.setFitHeight(50);
+                // productImage.setImage(new Image(item.getProduct().getImageUrl())); // TODO
+
+                // Product Name Text
+                Text productName = new Text(item.getProduct().getName());
+                productName.setStyle("-fx-font-size: 16;");
+
+                // Quantity ChoiceBox
+                ChoiceBox<Integer> quantityChoiceBox = new ChoiceBox<>();
+                for (int i = 1; i <= 10; i++) quantityChoiceBox.getItems().add(i);
+                quantityChoiceBox.setValue(item.getQuantity());
+                quantityChoiceBox.setOnAction(e -> {
+                    cartManager.updateItemQuantity(item.getProduct().getSku(), quantityChoiceBox.getValue());
+                    refreshCartView();
+                });
+
+                // Remove Button
+                Button removeButton = new Button("Remove");
+                removeButton.setStyle("-fx-font-size: 10;");
+                removeButton.setOnAction(e -> {
+                    cartManager.updateItemQuantity(item.getProduct().getSku(), 0);
+                    refreshCartView();
+                });
+
+                // Subtotal label for this item (price * quantity)
+                double lineTotal = item.getProduct().getPrice() * item.getQuantity();
+                Text lineTotalText = new Text(String.format("$%.2f", lineTotal));
+                lineTotalText.setStyle("-fx-font-size: 14;");
+
+                itemBox.getChildren().addAll(productImage, productName, quantityChoiceBox, removeButton, lineTotalText);
+
+                cartListView.getItems().add(itemBox);
+                subtotal += lineTotal;
+            }
+        }
+
+        totalLabel.setText(String.format("Subtotal: $%.2f", subtotal));
     }
 }
