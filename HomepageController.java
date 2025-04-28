@@ -34,8 +34,8 @@ public class homepageMain {
     @FXML // fx:id="purchasesButton"
     private Button purchasesButton; // Value injected by FXMLLoader
 
-    @FXML // fx:id="signinButton"
-    private Button signinButton; // Value injected by FXMLLoader
+    @FXML // fx:id="cartButton"
+    private Button cartButton; // Value injected by FXMLLoader
 
     @FXML
     void home(ActionEvent event) {
@@ -53,7 +53,7 @@ public class homepageMain {
     }
 
     @FXML
-    void signin(ActionEvent event) {
+    void cart(ActionEvent event) {
 
     }
 
@@ -63,7 +63,7 @@ public class homepageMain {
         assert homeButton != null : "fx:id=\"homeButton\" was not injected: check your FXML file 'Homepage.fxml'.";
         assert productsButton != null : "fx:id=\"productsButton\" was not injected: check your FXML file 'Homepage.fxml'.";
         assert purchasesButton != null : "fx:id=\"purchasesButton\" was not injected: check your FXML file 'Homepage.fxml'.";
-        assert signinButton != null : "fx:id=\"signinButton\" was not injected: check your FXML file 'Homepage.fxml'.";
+        assert cartButton != null : "fx:id=\"cartButton\" was not injected: check your FXML file 'Homepage.fxml'.";
 
     }
 
