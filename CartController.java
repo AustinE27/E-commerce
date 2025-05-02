@@ -1,8 +1,9 @@
 /**
     Controller for GUI Display.
-    Updated for dynamic ListView cart display with HBox per cart item.
+    Here is where test Products are stored. Line 61.
+    Updated for Picture Display on cart's ListView per cart item.
     @author J. Hernandez-Velazquez
-    @version 2.0
+    @version 3.0
  */
 
 package controller;
@@ -10,6 +11,7 @@ package controller;
 import javafx.collections.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.scene.image.ImageView;
@@ -53,11 +55,12 @@ public class CartController {
     public void initialize() {
 
 
-        //                          REMOVE LATER THIS IS A TESTPRODUCT
+        //                          REMOVE LATER THESE ARE TEST PRODUCTS
+        //               call cartManager.addProduct(productName, 1) to add to cart
 
 
-        Product testProduct = new Product(123456, "Laptop", 1149.99);
-        Product testProduct2 = new Product(12346, "Wireless Keyboard", 27.99);
+        Product testProduct = new Product(123456, "Laptop", 1149.99, "/images/laptoptest.png");
+        Product testProduct2 = new Product(12346, "Wireless Keyboard", 27.99, "/images/keyboardtest.png");
 
         cartManager.addProduct(testProduct, 1);
         cartManager.addProduct(testProduct2, 2);
@@ -78,17 +81,21 @@ public class CartController {
             if (item.getQuantity() > 0) {
                 HBox itemBox = new HBox(15); // 15px spacing
 
-                // (Optional future) Product Image placeholder
+                // Product Image
                 ImageView productImage = new ImageView();
                 productImage.setFitWidth(50);
                 productImage.setFitHeight(50);
-                // productImage.setImage(new Image(item.getProduct().getImageUrl())); // TODO
+                String imagePath = item.getProduct().getProductPhoto();
+                if (imagePath != null && !imagePath.isEmpty()) {
+                        Image image = new Image(getClass().getResourceAsStream(imagePath));
+                        productImage.setImage(image);
+                }
 
                 // Product Name Text
                 Text productName = new Text(item.getProduct().getName());
                 productName.setStyle("-fx-font-size: 16;");
 
-                // Quantity ChoiceBox
+                // Quantity Choice Box
                 ChoiceBox<Integer> quantityChoiceBox = new ChoiceBox<>();
                 for (int i = 1; i <= 10; i++) quantityChoiceBox.getItems().add(i);
                 quantityChoiceBox.setValue(item.getQuantity());

@@ -1,20 +1,29 @@
-package com.example.commerceproj;
-
-import javafx.application.Application;
-
 /**
- * Main launcher class that starts the JavaFX application.
- *
- * Author: Samuel Garcia
- * Date: 4/17/25
+    Main for Cart/AddToCart.
+    Launches GUI and has test Product.
+    @author J. Hernandez-Velazquez
+    @version 2.1
  */
-public class Main {
-    /**
-     * Launches the JavaFX application using HelloApplication.
-     *
-     * @param args command-line arguments
-     */
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.net.URL;
+
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        URL fxmlLocation = getClass().getResource("/cart.fxml");
+        System.out.println("FXML Location: " + fxmlLocation);
+        Parent root = FXMLLoader.load(fxmlLocation);
+        primaryStage.setTitle("Ecommerce Site");
+        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
-        Application.launch(HelloApplication.class, args);
+        launch(args);
     }
 }

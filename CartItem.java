@@ -2,7 +2,7 @@
     A user's Cart requires a selection
     of quantity and removal.
     @author J. Hernandez-Velazquez
-    @version 1.0
+    @version 2.0
  */
 package model;
 
@@ -64,11 +64,4 @@ public class CartItem {
         return product.getPrice() * quantity;
     }
 
-    /*
-        Retrieves the image file linked
-        to this product (currently unused).
-     */
-    // public png getImage() {
-    //     return product.getImage();
-    // }
 }
