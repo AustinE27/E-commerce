@@ -4,7 +4,7 @@
     @author J. Hernandez-Velazquez
     @version 2.0
  */
-package model;
+package com.example.ecommercestoreprojecttemp;
 
 /**
     Represents an individual item added

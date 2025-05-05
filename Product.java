@@ -4,7 +4,8 @@
     @author J. Hernandez-Velazquez
     @version 2.0
  */
-package model;
+package com.example.ecommercestoreprojecttemp;
+
 
 import java.util.ArrayList;
 import java.util.List;

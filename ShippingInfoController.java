@@ -1,4 +1,4 @@
-package com.example.commerceproj;
+package com.example.ecommercestoreprojecttemp;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -23,9 +23,6 @@ public class ShippingInfoController {
     private ToggleGroup shippingGroup;
     private CheckoutController checkoutController;
 
-    /**
-     * Initializes the controller and sets up validation for form fields.
-     */
     @FXML
     public void initialize() {
         shippingGroup = new ToggleGroup();
@@ -37,9 +34,6 @@ public class ShippingInfoController {
         addFieldListeners();
     }
 
-    /**
-     * Adds listeners to fields to enable continue button when all are filled.
-     */
     private void addFieldListeners() {
         javafx.beans.value.ChangeListener<String> listener = (obs, oldVal, newVal) -> {
             boolean filled = !emailField.getText().isEmpty() &&
@@ -63,9 +57,6 @@ public class ShippingInfoController {
         this.checkoutController = controller;
     }
 
-    /**
-     * Proceeds to the payment info screen, setting the shipping cost.
-     */
     @FXML
     private void handleContinue() {
         if (checkoutController != null) {

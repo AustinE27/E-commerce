@@ -1,4 +1,4 @@
-package com.example.commerceproj;
+package com.example.ecommercestoreprojecttemp;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

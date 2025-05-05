@@ -1,53 +1,43 @@
-/**
-    Manages the shopping cart logic.
-    Handles adding products, updating quantities, and providing cart data.
-    @author J. Hernandez-Velazquez.
-    @version 2.0
- */
+package com.example.ecommercestoreprojecttemp;
 
-package model;
-
-import java.util.List;
-import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
-    Controls operations for adding, updating,
-    and retrieving items in the shopping cart.
+ * Manages the shopping cart functionality using a singleton pattern.
+ * Allows adding products, updating quantities, retrieving items, and clearing the cart.
  */
 public class CartManager {
 
-    /**
-        Holds the list of all items currently
-        present in the shopping cart.
-     */
-    private final List<CartItem> cartItems = new ArrayList<>();
+    // Singleton instance
+    private static CartManager instance;
+
+    // Internal list of cart items
+    private final ObservableList<CartItem> cartItems = FXCollections.observableArrayList();
 
     /**
-        Returns the current list of CartItem objects
-        in the shopping cart.
-        @return list of cart items
+     * Private constructor to prevent external instantiation.
      */
-    public List<CartItem> getCartItems() {
-        return cartItems;
+    private CartManager() {
     }
 
     /**
-        Updates the quantity of a cart item given its
-        unique SKU identifier (as int).
-        If the item is found, quantity is updated.
+     * Returns the singleton instance of CartManager.
+     *
+     * @return the shared CartManager instance
      */
-    public void updateItemQuantity(int sku, int quantity) {
-        for (CartItem item : cartItems) {
-            if (item.getProduct().getSku() == sku) {
-                item.setQuantity(quantity);
-                return;
-            }
+    public static CartManager getInstance() {
+        if (instance == null) {
+            instance = new CartManager();
         }
+        return instance;
     }
 
     /**
-        Adds a product to the cart, or if already present,
-        increments the quantity.
+     * Adds a product to the cart or updates its quantity if already present.
+     *
+     * @param product  the product to add
+     * @param quantity the quantity to add
      */
     public void addProduct(Product product, int quantity) {
         for (CartItem item : cartItems) {
@@ -57,5 +47,40 @@ public class CartManager {
             }
         }
         cartItems.add(new CartItem(product, quantity));
+    }
+
+    /**
+     * Returns all cart items as an observable list.
+     *
+     * @return observable list of cart items
+     */
+    public ObservableList<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    /**
+     * Updates the quantity of a specific product in the cart.
+     *
+     * @param sku      the SKU of the product to update
+     * @param quantity the new quantity (removes item if quantity <= 0)
+     */
+    public void updateItemQuantity(int sku, int quantity) {
+        for (CartItem item : cartItems) {
+            if (item.getProduct().getSku() == sku) {
+                if (quantity <= 0) {
+                    cartItems.remove(item);
+                } else {
+                    item.setQuantity(quantity);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * Clears all items from the cart.
+     */
+    public void clearCart() {
+        cartItems.clear();
     }
 }

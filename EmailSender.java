@@ -1,4 +1,4 @@
-package com.example.commerceproj;
+package com.example.ecommercestoreprojecttemp;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;

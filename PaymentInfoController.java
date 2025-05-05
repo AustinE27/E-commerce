@@ -1,4 +1,4 @@
-package com.example.commerceproj;
+package com.example.ecommercestoreprojecttemp;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -20,9 +20,6 @@ public class PaymentInfoController {
     private CheckoutController checkoutController;
     private ShippingInfoController shippingController;
 
-    /**
-     * Initializes the input listeners and field validation.
-     */
     @FXML
     public void initialize() {
         cardNumberField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -65,9 +62,6 @@ public class PaymentInfoController {
         addValidationListeners();
     }
 
-    /**
-     * Enables the confirm button only if all fields are filled.
-     */
     private void addValidationListeners() {
         TextField[] fields = {cardNumberField, cardNameField, expiryMonthField, expiryYearField, cvvField};
         for (TextField field : fields) {
@@ -84,9 +78,6 @@ public class PaymentInfoController {
         }
     }
 
-    /**
-     * Handles the confirm action and validates all user input.
-     */
     @FXML
     private void handleConfirm() {
         if (cardNumberField.getText().length() != 16) {
@@ -114,6 +105,7 @@ public class PaymentInfoController {
         if (checkoutController != null) {
             checkoutController.loadOrderConfirmation();
         }
+
         if (shippingController != null) {
             String userEmail = shippingController.getEmail();
             String userName = shippingController.getName();
@@ -125,14 +117,14 @@ public class PaymentInfoController {
             String shippingMethod = shippingController.getShippingMethod();
 
             StringBuilder itemsList = new StringBuilder();
-            for (CheckoutController.CartItem item : checkoutController.getCartItems()) {
-                itemsList.append("- ").append(item.getName())
-                        .append(" ($").append(String.format("%.2f", item.getPrice()))
+            for (CartItem item : CartManager.getInstance().getCartItems()) {
+                itemsList.append("- ").append(item.getProduct().getName())
+                        .append(" ($").append(String.format("%.2f", item.getProduct().getPrice()))
                         .append(")\n");
             }
 
-            String fromEmail = "forealisam@gmail.com";     // 🔥 your Gmail
-            String appPassword = "uaqm fndv xnyd qklf";       // 🔥 your app password
+            String fromEmail = "forealisam@gmail.com";
+            String appPassword = "uaqm fndv xnyd qklf";
             String subject = "Order Confirmation";
 
             String body = "Hi " + userName + ",\n\n" +
@@ -152,11 +144,6 @@ public class PaymentInfoController {
         }
     }
 
-    /**
-     * Displays an alert dialog with an error message.
-     *
-     * @param message error message to show
-     */
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

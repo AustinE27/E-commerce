@@ -1,25 +1,17 @@
-/**
-    Main for Cart/AddToCart.
-    Launches GUI and has test Product.
-    @author J. Hernandez-Velazquez
-    @version 2.1
- */
+package com.example.ecommercestoreprojecttemp;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.URL;
-
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL fxmlLocation = getClass().getResource("/cart.fxml");
-        System.out.println("FXML Location: " + fxmlLocation);
-        Parent root = FXMLLoader.load(fxmlLocation);
-        primaryStage.setTitle("Ecommerce Site");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/ecommercestoreprojecttemp/Homepage.fxml"));
+        primaryStage.setTitle("E-commerce Store");
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
 
