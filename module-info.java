@@ -1,12 +1,10 @@
-module com.example.commerceproj {
+module com.example.ecommercestoreprojecttemp {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.desktop;
-    requires java.logging;
+    requires java.sql;
     requires jakarta.mail;
-    requires jakarta.activation;
 
 
-    opens com.example.commerceproj to javafx.fxml;
-    exports com.example.commerceproj;
+    opens com.example.ecommercestoreprojecttemp to javafx.fxml;
+    exports com.example.ecommercestoreprojecttemp;
 }
