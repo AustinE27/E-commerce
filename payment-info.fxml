@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.ecommercestoreprojecttemp.PaymentInfoController"
+      spacing="15"
+      style="-fx-padding: 20;">
+    
+    <Label text="Payment Information" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    
+    <GridPane vgap="10" hgap="10">
+        <Label text="Card Number:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="cardNumberField" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+        
+        <Label text="Name on Card:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="cardNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+        
+        <Label text="Expiry Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+            <TextField fx:id="expiryMonthField" prefWidth="50" promptText="MM"/>
+            <Label text="/"/>
+            <TextField fx:id="expiryYearField" prefWidth="50" promptText="YY"/>
+        </HBox>
+        
+        <Label text="CVV:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="cvvField" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="50"/>
+    </GridPane>
+    
+    <Button fx:id="confirmButton" text="Confirm Purchase" 
+            onAction="#handleConfirm"
+            style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
+            maxWidth="Infinity"/>
+    
+</VBox> 

@@ -7,31 +7,34 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CartController">
+<AnchorPane prefHeight="600.0" prefWidth="650.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.ecommercestoreprojecttemp.CartController">
 
     <children>
 
         <!-- Title -->
         <Text layoutX="20.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Cart">
             <font>
-                <Font size="25.0" />
+                <Font size="25.0"/>
             </font>
         </Text>
 
         <!-- Cart Items List -->
-        <ListView fx:id="cartListView" layoutX="20.0" layoutY="60.0" prefHeight="400.0" prefWidth="600.0" />
+        <ListView fx:id="cartListView" layoutX="20.0" layoutY="60.0" prefHeight="400.0" prefWidth="600.0"/>
 
         <!-- Subtotal Label -->
-        <Label fx:id="totalLabel" layoutX="20.0" layoutY="480.0" style="-fx-font-size: 17;-fx-font-style: italic" text="Subtotal: $0.00">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Label>
+        <Label fx:id="totalLabel" layoutX="20.0" layoutY="480.0" style="-fx-font-size: 17; -fx-font-style: italic;" text="Subtotal: $0.00">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Label>
 
         <!-- Checkout Button -->
-        <Button layoutX="497.0" layoutY="480.0" prefHeight="40.0" prefWidth="120.0" style="-fx-font-size: 18; -fx-font-weight: bold" text="Checkout">
-         <font>
-            <Font name="System Bold" size="78.0" />
-         </font></Button>
+        <Button fx:id="checkoutButton" layoutX="497.0" layoutY="480.0" prefHeight="40.0" prefWidth="120.0"
+                style="-fx-font-size: 18; -fx-font-weight: bold" text="Checkout" onAction="#goToCheckout" />
+
 
     </children>
 
