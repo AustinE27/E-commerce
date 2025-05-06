@@ -3,10 +3,8 @@ package com.example.ecommercestoreprojecttemp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,6 +39,9 @@ public class CheckoutController {
 
     private void updateCartSummary() {
         cartSummary.getChildren().clear();
+
+        //                      SETS SUBTOTAL TO 0 TO STOP 2X PRICE BUG
+        subtotal = 0.0;
 
         List<CartItem> cartItems = CartManager.getInstance().getCartItems();
 
