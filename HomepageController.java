@@ -1,10 +1,11 @@
 /**
  * Controller for our site homepage.
- * Dynamically loads and displays products from the database, enables search and sorting,
+ * Dynamically loads and displays products from the database to purchase.
  * and allows users to add items to the cart or navigate to the cart view.
- *
+ * 
+ * Updated to V Box Display, enabled search and sorting for items.
  * @author J. Hernandez-Velazquez
- * @version 1.0
+ * @version 2.0
  */
 package com.example.ecommercestoreprojecttemp;
 

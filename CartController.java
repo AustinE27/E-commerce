@@ -1,8 +1,8 @@
 /**
  * Controller for displaying and interacting with the shopping cart UI.
- * Handles dynamic rendering of cart items with pictures, quantity adjustments, subtotal,
- * and scene transition to the checkout view.
+ * Displays cart items with pictures and allows for quantity adjustments.
  *
+ * Updated for subtotal calculator and scene transition to Checkout.
  * @author J. Hernandez-Velazquez
  * @version 2.0
  */

@@ -1,5 +1,6 @@
 /**
  * Product datatype tester for CartItem.
+ *
  * Updated to show pictures per product.
  * @author J. Hernandez-Velazquez
  * @version 2.0

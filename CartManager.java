@@ -1,8 +1,8 @@
 /**
  * Handles all cart-related operations in the e-commerce application.
- * Implements the singleton design pattern to maintain a consistent cart state across the app.
- * Supports adding items, updating quantities, retrieving the current cart, and clearing it.
+ * Supports adding items, updating quantities and retrieving the current cart.
  *
+ * Updated to fix item quantity bug.
  * @author J. Hernandez-Velazquez
  * @version 2.0
  */
