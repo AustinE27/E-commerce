@@ -1,3 +1,11 @@
+/**
+ * Controller for our site homepage.
+ * Dynamically loads and displays products from the database, enables search and sorting,
+ * and allows users to add items to the cart or navigate to the cart view.
+ *
+ * @author J. Hernandez-Velazquez
+ * @version 1.0
+ */
 package com.example.ecommercestoreprojecttemp;
 
 import javafx.fxml.FXML;
@@ -14,53 +22,81 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class HomepageController {
 
+    /**
+     * Container for displaying product entries.
+     */
     @FXML private VBox productContainer;
+
+    /**
+     * Button that opens the cart view.
+     */
     @FXML private Button cartButton;
+
+    /**
+     * ScrollPane that wraps the product container.
+     */
     @FXML private ScrollPane scrollPane;
+
+    /**
+     * Text field used to search for products by name.
+     */
     @FXML private TextField searchBox;
+
+    /**
+     * Button to sort the product list by price.
+     */
     @FXML private Button sortButton;
 
-    private List<Product> allProducts = new ArrayList<>();
+    /**
+     * List holding all products fetched from the database.
+     */
+    private List<Product> allProducts;
 
+    /**
+     * Called when the FXML is initiated.
+     * Initializes product list, sets up search and sorting behavior.
+     */
     @FXML
     public void initialize() {
+        /**
+         * Fetch products dynamically from the database.
+         */
+        allProducts = ProductDAO.getProducts();
 
-        //                                      TEST DUMMY PRODUCTS NOT CONNECTED TO DATABASE
+        if (allProducts.isEmpty()) {
+            System.out.println("No products found in the database.");
+        } else {
+            updateProductView(allProducts);
+        }
 
-        allProducts = List.of(
-                new Product(1, "Phone", 899.99, "/com/example/ecommercestoreprojecttemp/ProductPhotos/phone.png"),
-                new Product(2, "Refrigerator", 1299.99, "/com/example/ecommercestoreprojecttemp/ProductPhotos/refrigerator.png"),
-                new Product(3, "Dishwasher", 750.00, "/com/example/ecommercestoreprojecttemp/ProductPhotos/dishwasher.png"),
-                new Product(4, "Microwave", 349.99, "/com/example/ecommercestoreprojecttemp/ProductPhotos/microwave.png")
-        );
+        /**
+         * Search box listener for filtering products dynamically.
+         */
+        searchBox.textProperty().addListener((observable, oldValue, newValue) -> filterProducts(newValue));
 
-        updateProductView(allProducts);
+        /**
+         * Sort button action for sorting products by price.
+         */
+        sortButton.setOnAction(e -> sortProductsByPrice());
 
-        // Search box listener
-        searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterProducts(newValue);
-        });
-
-        // Sort button action
-        sortButton.setOnAction(e -> {
-            sortProductsByPrice();
-        });
-
-        // Ensure scrollPane displays content properly
+        /**
+         * Ensure ScrollPane shows content properly.
+         */
         scrollPane.setContent(productContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
     }
 
-
-    //Used for Search & Sort By Lowest
+    /**
+     * Replaces the current product view with a given list of products.
+     *
+     * @param productsToShow list of products to display
+     */
     private void updateProductView(List<Product> productsToShow) {
         productContainer.getChildren().clear();
         for (Product product : productsToShow) {
@@ -68,6 +104,11 @@ public class HomepageController {
         }
     }
 
+    /**
+     * Adds a single product's info to the product homepage display.
+     *
+     * @param product the product to add
+     */
     private void addProductToView(Product product) {
         VBox itemBox = new VBox(5);
 
@@ -75,29 +116,35 @@ public class HomepageController {
         Label priceLabel = new Label(String.format("$%.2f", product.getPrice()));
         Button addButton = new Button("Add to Cart");
 
-        ImageView imageView = null;
-        if (product.getProductPhoto() != null && !product.getProductPhoto().isEmpty()) {
+        /**
+         * Load product image dynamically from the given image path.
+         */
+        ImageView productImage = new ImageView();
+        productImage.setFitWidth(250);
+        productImage.setPreserveRatio(true);
+
+        String imagePath = product.getImagePath();
+        if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                imageView = new ImageView(new Image(getClass().getResource(product.getProductPhoto()).toExternalForm()));
-                imageView.setFitWidth(250);
-                imageView.setPreserveRatio(true);
+                Image image = new Image(getClass().getResourceAsStream(imagePath));
+                productImage.setImage(image);
             } catch (Exception e) {
                 System.out.println("Error loading image for: " + product.getName());
             }
         }
 
-        addButton.setOnAction(e -> {
-            CartManager.getInstance().addProduct(product, 1);
-        });
+        addButton.setOnAction(e -> CartManager.getInstance().addProduct(product, 1));
 
-        if (imageView != null) {
-            itemBox.getChildren().add(imageView);
-        }
+        itemBox.getChildren().add(productImage);
         itemBox.getChildren().addAll(nameLabel, priceLabel, addButton);
         productContainer.getChildren().add(itemBox);
     }
 
-    //Keyword Search function
+    /**
+     * Filters the list of products based on the text entered into the search box.
+     *
+     * @param searchText the text to filter product names by
+     */
     private void filterProducts(String searchText) {
         String lowerText = searchText.toLowerCase();
         List<Product> filtered = allProducts.stream()
@@ -106,14 +153,19 @@ public class HomepageController {
         updateProductView(filtered);
     }
 
-    //Lowest to Highest Sort
+    /**
+     * Sorts the list of products by price in ascending order and updates the view.
+     */
     private void sortProductsByPrice() {
         List<Product> sorted = allProducts.stream()
-                .sorted(Comparator.comparingDouble(Product::getPrice))
+                .sorted((p1, p2) -> Double.compare(p1.getPrice(), p2.getPrice()))
                 .collect(Collectors.toList());
         updateProductView(sorted);
     }
 
+    /**
+     * Opens the cart view in a new window by loading the cart.fxml layout.
+     */
     @FXML
     private void openCart() {
         try {

@@ -1,6 +1,13 @@
+/**
+ * Controller for displaying and interacting with the shopping cart UI.
+ * Handles dynamic rendering of cart items with pictures, quantity adjustments, subtotal,
+ * and scene transition to the checkout view.
+ *
+ * @author J. Hernandez-Velazquez
+ * @version 2.0
+ */
 package com.example.ecommercestoreprojecttemp;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,32 +19,49 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.List;
-
 import java.io.IOException;
 
 public class CartController {
 
+    /**
+     * ListView displaying cart items as HBox components.
+     */
     @FXML
     private ListView<HBox> cartListView;
 
+    /**
+     * Label to display the cart subtotal.
+     */
     @FXML
     private Label totalLabel;
 
+    /**
+     * Button to proceed to the checkout screen.
+     */
     @FXML
     private Button checkoutButton;
 
+    /**
+     * Reference to the CartManager singleton for cart operations.
+     */
     private final CartManager cartManager = CartManager.getInstance();
 
-
-
+    /**
+     * Called automatically when the FXML is loaded.
+     * Initializes the cart view.
+     */
     @FXML
     public void initialize() {
         refreshCartView();
     }
 
+    /**
+     * Refreshes the cart display by clearing and repopulating the ListView.
+     * Displays product image, name, quantity choice box, remove button, and line total.
+     * Updates the subtotal label at the bottom.
+     */
     private void refreshCartView() {
         cartListView.getItems().clear();
-
         double subtotal = 0.0;
 
         List<CartItem> items = cartManager.getCartItems();
@@ -48,7 +72,7 @@ public class CartController {
                 ImageView productImage = new ImageView();
                 productImage.setFitWidth(50);
                 productImage.setFitHeight(50);
-                String imagePath = item.getProduct().getProductPhoto();
+                String imagePath = item.getProduct().getImagePath();
                 if (imagePath != null && !imagePath.isEmpty()) {
                     Image image = new Image(getClass().getResourceAsStream(imagePath));
                     productImage.setImage(image);
@@ -86,6 +110,10 @@ public class CartController {
         totalLabel.setText(String.format("Subtotal: $%.2f", subtotal));
     }
 
+    /**
+     * Navigates to the checkout view by loading the corresponding FXML layout.
+     * Opens the checkout scene in a new stage.
+     */
     @FXML
     private void goToCheckout() {
         try {

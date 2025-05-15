@@ -1,3 +1,11 @@
+/**
+ * Handles all cart-related operations in the e-commerce application.
+ * Implements the singleton design pattern to maintain a consistent cart state across the app.
+ * Supports adding items, updating quantities, retrieving the current cart, and clearing it.
+ *
+ * @author J. Hernandez-Velazquez
+ * @version 2.0
+ */
 package com.example.ecommercestoreprojecttemp;
 
 import javafx.collections.FXCollections;
@@ -9,10 +17,14 @@ import javafx.collections.ObservableList;
  */
 public class CartManager {
 
-    // Singleton instance
-    private static CartManager instance;
+    /**
+     * Singleton instance of CartManager.
+     */
+    private static com.example.ecommercestoreprojecttemp.CartManager instance;
 
-    // Internal list of cart items
+    /**
+     * Internal list of cart items.
+     */
     private final ObservableList<CartItem> cartItems = FXCollections.observableArrayList();
 
     /**
