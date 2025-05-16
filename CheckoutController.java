@@ -10,74 +10,109 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Controller for handling checkout operations including cart summary,
- * navigation between checkout stages, and dynamic updates to totals.
+ * Controller for handling checkout operations, including displaying
+ * the cart summary, navigating between checkout stages, and updating totals.
  *
- * Author: Samuel Garcia
- * Date: 4/17/25
+ * Initializes by showing the cart summary and loading the shipping info view.
+ *
+ * @author Samuel Garcia
+ * @version 1.0
+ * 4/17/25
  */
 public class CheckoutController {
 
+    /** Container displaying each cart item, subtotal, shipping, and total. */
     @FXML
     private VBox cartSummary;
+
+    /** Main content area where different checkout steps (shipping, payment, confirmation) are loaded. */
     @FXML
     private VBox mainContent;
 
+    /** Current subtotal computed from cart items. */
     private double subtotal = 0.0;
+
+    /** Current shipping cost (defaulted to standard rate). */
     private double shippingCost = 15.0;
+
+    /** Grand total (subtotal + shipping). */
     private double total = 0.0;
 
+    /** Controller for the shipping information step. */
     private ShippingInfoController shippingController;
+
+    /** Controller for the payment information step. */
     private PaymentInfoController paymentController;
+
+    /** Controller for the order confirmation step. */
     private OrderConfirmationController confirmationController;
 
+    /**
+     * Called automatically after FXML loading.
+     * Updates the cart summary display and begins the checkout flow
+     * by loading the shipping info screen.
+     */
     @FXML
     public void initialize() {
         updateCartSummary();
         loadShippingInfo();
     }
 
+    /**
+     * Rebuilds the cart summary panel: clears existing entries,
+     * recalculates subtotal, and displays each item line along with
+     * subtotal, shipping cost, and total.
+     */
     private void updateCartSummary() {
         cartSummary.getChildren().clear();
-
-        //                      SETS SUBTOTAL TO 0 TO STOP 2X PRICE BUG
-        subtotal = 0.0;
+        subtotal = 0.0;  // reset to avoid duplicate accumulation
 
         List<CartItem> cartItems = CartManager.getInstance().getCartItems();
-
-        // Add cart items
         for (CartItem item : cartItems) {
             if (item.getQuantity() > 0) {
-                Label itemLabel = new Label(item.getProduct().getName() + " x" + item.getQuantity() +
-                        " - $" + String.format("%.2f", item.getProduct().getPrice() * item.getQuantity()));
+                Label itemLabel = new Label(
+                        item.getProduct().getName() +
+                                " x" + item.getQuantity() +
+                                " - $" + String.format("%.2f",
+                                item.getProduct().getPrice() * item.getQuantity()
+                        )
+                );
                 cartSummary.getChildren().add(itemLabel);
                 subtotal += item.getProduct().getPrice() * item.getQuantity();
             }
         }
 
-        // Add subtotal
         Label subtotalLabel = new Label("Subtotal: $" + String.format("%.2f", subtotal));
         cartSummary.getChildren().add(subtotalLabel);
 
-        // Add shipping
         Label shippingLabel = new Label("Shipping: $" + String.format("%.2f", shippingCost));
         cartSummary.getChildren().add(shippingLabel);
 
-        // Add total
         total = subtotal + shippingCost;
         Label totalLabel = new Label("Total: $" + String.format("%.2f", total));
         totalLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
         cartSummary.getChildren().add(totalLabel);
     }
 
+    /**
+     * Updates the shipping cost and refreshes the cart summary to reflect the change.
+     *
+     * @param cost new shipping cost to apply
+     */
     public void setShippingCost(double cost) {
         this.shippingCost = cost;
         updateCartSummary();
     }
 
+    /**
+     * Loads the shipping information FXML into the main content area
+     * and passes this controller to the ShippingInfoController.
+     */
     public void loadShippingInfo() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ecommercestoreprojecttemp/shipping-info.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/ecommercestoreprojecttemp/shipping-info.fxml")
+            );
             Parent shippingInfo = loader.load();
             shippingController = loader.getController();
             shippingController.setCheckoutController(this);
@@ -87,9 +122,15 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Loads the payment information FXML into the main content area,
+     * passes required controllers, and preserves shipping data.
+     */
     public void loadPaymentInfo() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ecommercestoreprojecttemp/payment-info.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/ecommercestoreprojecttemp/payment-info.fxml")
+            );
             Parent paymentInfo = loader.load();
             paymentController = loader.getController();
             paymentController.setCheckoutController(this);
@@ -100,9 +141,16 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Loads the order confirmation FXML into the main content area,
+     * injects all prior controllers, populates confirmation details,
+     * and displays the final confirmation screen.
+     */
     public void loadOrderConfirmation() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ecommercestoreprojecttemp/order-confirmation.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/ecommercestoreprojecttemp/order-confirmation.fxml")
+            );
             Parent confirmation = loader.load();
             confirmationController = loader.getController();
             confirmationController.setCheckoutController(this);
@@ -115,3 +163,4 @@ public class CheckoutController {
         }
     }
 }
+
