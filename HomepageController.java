@@ -4,7 +4,7 @@
  * and allows users to add items to the cart or navigate to the cart view.
  * 
  * Updated to V Box Display, enabled search and sorting for items.
- * @author Danny Carpio-Tovar & Jason Hernandez-Velazquez
+ * @author Danny Carpio-Tovar & J. Hernandez-Velazquez
  * @version 2.0
  */
 package com.example.ecommercestoreprojecttemp;
